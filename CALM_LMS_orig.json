@@ -1,0 +1,1727 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SAP Cloud ALM Landscape",
+    "version": "1.0.0",
+    "description": "The SAP Cloud ALM Landscape APIs enable you to read the landscape objects which include cloud services and technical systems",
+    "x-targetEndpoint": "https://eu10.alm.cloud.sap",
+    "contact": {
+      "name": "DL LMS_BSM_HM_ALL",
+      "email": "DL_60FAB0BF81460A027ECBE105@global.corp.sap"
+    }
+  },
+  "externalDocs": {
+    "description": "API Guide for SAP Cloud ALM: Landscape Objects API",
+    "url": "https://help.sap.com/docs/cloud-alm/apis/landscape-management-service-api"
+  },
+  "x-sap-stateInfo": {
+    "state": "Active"
+  },
+  "x-sap-shortText": "Get landscape objects (cloud services and technical systems with logical systems) from Landscape Management Service",
+  "security": [
+    {
+      "oAuth2": []
+    }
+  ],
+  "x-sap-api-type": "REST",
+  "servers": [
+    {
+      "url": "https://sandbox.api.sap.com/SAPCALM/calm-landscape/v1"
+    },
+    {
+      "url": "https://{tenant}.{region}.alm.cloud.sap/api/calm-landscape/v1",
+      "variables": {
+        "tenant": {
+          "default": ""
+        },
+        "region": {
+          "description": "SAP Cloud ALM region",
+          "enum": [
+            "eu10",
+            "eu20"
+          ],
+          "default": "eu10"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/landscapeObjects": {
+      "get": {
+        "tags": [
+          "Landscape Objects"
+        ],
+        "summary": "Public API to read the landscape details present in Landscape Management Service for given request parameters",
+        "description": "A public API to read Landscape details is a software interface that allows authorized users to retrieve information about the cloud services, technical systems, and logical systems that make up an organization's Landscape. The API provides a way for developers, administrators, and other authorized parties to access this information programmatically, typically through HTTP requests.",
+        "externalDocs": {
+          "description": "Refer the SAP Help of Landscape Management Service for more information",
+          "url": "https://help.sap.com/docs/cloud-alm/apis/landscape-management-service-api"
+        },
+        "operationId": "getLandscapeObjects",
+        "parameters": [
+          {
+            "name": "objectType",
+            "in": "query",
+            "description": "Object type refers to the type of object being managed within a landscape. The object type can be cloud service or technical system, and it represents the category or classification of the object being managed \n\n The object type in Landscape Management can contain both cloud services and technical systems",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "CloudService",
+              "enum": [
+                "CloudService",
+                "TechnicalSystem",
+                "BusinessService"
+              ]
+            },
+            "example": "CloudService"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "description": "In the context of cloud services or technical systems, a source refers to the origin or location from where the service or system was imported or created. \n\n It can help to identify the origin of the service or system, which can be useful for troubleshooting, auditing, or compliance purposes \n\n There can be different types of sources, such as IMPORTED (auto discovered from Central Landscape Directory), REGISTERED, or Manually created",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "IMPORTED",
+              "enum": [
+                "IMPORTED",
+                "REGISTERED",
+                "Manual"
+              ]
+            },
+            "example": "IMPORTED"
+          },
+          {
+            "name": "lmsId",
+            "in": "query",
+            "description": "LMS ID is a unique identifier used to identify a specific tenant or technical system within a landscape. A landscape typically consists of multiple technical systems that are connected to each other and used to support various business processes \n\n An LMS ID will be assigned to a tenant or technical system during the initial setup or configuration of the landscape \n\n Overall, the LMS ID plays a critical role in ensuring effective landscape management and maintaining the reliability and availability of the systems and processes within the landscape. \n\n When a new tenant or technical system is registered within a landscape management, the LMS ID is often sent as a response to the registration request.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "The service type refers to the type of product or service that the tenant has subscribed to. It is essentially a classification or categorization of the subscribed product or service, which can help in identifying and managing the features, functionality, and resources associated with it. \n\n This ID is available in the Landscape Management application of SAP CLM. \n\n you can check more information here https://support.sap.com/en/alm/sap-cloud-alm/operations/expert-portal/setup-managed-services.html",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "systemNumber",
+            "in": "query",
+            "description": "SystemNumber is a term used in SAP to refer to the identifier of a specific system within a landscape. In the case of cloud services, it typically refers to the tenant ID of the service, while in the case of on-premise systems, it refers to the system number of the installation \n\n The SystemNumber is an important parameter that is used to uniquely identify a system or service within a landscape. It is often required for authentication, authorization, and other configuration tasks.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "A tenant name is an identifier used to differentiate and manage different instances of a cloud service within a multi-tenant environment. It is typically a string of characters that is associated with a specific instance of the service \n\n In the case of on-premise technical systems, the System ID serves a similar purpose as the tenant name for cloud services \n\n It is an identifier used to differentiate and manage different instances of a technical system within a landscape",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "description": "The role of the tenant or technical system. \n\n the role of a cloud service or technical system is used to identify the landscape type of the system, such as whether it is a development, test, or production system.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "PROD",
+              "enum": [
+                "DEV",
+                "DEVELOP",
+                "PROD",
+                "ADMIN"
+              ]
+            }
+          },
+          {
+            "name": "externalId",
+            "in": "query",
+            "description": "External ID is a unique identifier that is assigned to a tenant. \n\n It is used to establish a cross-system reference to the tenant, allowing for data integration and synchronization between multiple systems. \n\n This ID is available in the Landscape Management application of SAP CLM. (for example, it will be a Subaccount ID for the BTP platform.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "It is used to limit the amount of data that is returned in the response. It specifies the maximum number of items or records that can be returned by the server in response to a request \n\n The \"limit\" parameter can help to improve the efficiency and performance of the web service by reducing the amount of data that needs to be transferred between the client and server",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100
+            },
+            "example": 100
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "This parameter is used to specify the starting point or index of a set of data that should be returned in response to a request. It indicates the number of items or records that should be skipped over before returning data to the client..",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "example": 0
+          },
+          {
+            "name": "deploymentModel",
+            "in": "query",
+            "description": "The deployment model field describes where a cloud service or technical system is deployed. The possible values are:\n\nSAP Public Cloud: A public cloud service offered by SAP\n\nBTP System: A public cloud service by SAP that is based on SAP BTP\n\nSAP Private Cloud: The system is installed at and operated by SAP Enterprise Cloud Services\n\nOn-Premise: The system is installed on the customer premises or a non-SAP hyperscaler offering\n\nOther Public Cloud: A public cloud service offered by another vendor.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SAP Public Cloud",
+                "SAP Private Cloud",
+                "On-Premise",
+                "Other Public Cloud",
+                "BTP System"
+              ]
+            },
+            "example": "SAP Public Cloud"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LandscapeObjectsApiModel"
+                  }
+                },
+                "examples": {
+                  "Technical Systems": {
+                    "description": "The landscape objects for technical system",
+                    "value": [
+                      {
+                        "lmsId": "6e1d49bb-9d1b-4c32-beb9-fd5216517b0d",
+                        "name": "TST",
+                        "description": "TST",
+                        "objectType": "TechnicalSystem",
+                        "source": "Manual",
+                        "systemNumber": "192837465",
+                        "systemType": "ABAP",
+                        "role": "TEST",
+                        "mainUrl": "https://ldcift7.wdf.sap.corp:44300",
+                        "logonUrl": "",
+                        "location": "",
+                        "customerNumber": "",
+                        "customerName": "",
+                        "externalId": "",
+                        "serviceType": "SAP_FRUN",
+                        "serviceTypeLabel": "SAP Focused Run",
+                        "deploymentModel": "On-Premise",
+                        "logicalSystems": [
+                          {
+                            "lmsId": "0516bda8-d91e-462b-af2d-cf8c4d22496e",
+                            "client": "500",
+                            "role": "TEST"
+                          }
+                        ],
+                        "instances": [
+                          {
+                            "id": "1502ef2c-ad47-3169-b399-aecb94efb7c5",
+                            "name": "host001test",
+                            "type": "ASCS",
+                            "fqdn": "host.company..com",
+                            "instanceNumber": "01",
+                            "ipAddress": "55.555.555.55",
+                            "features": "MESSAGESERVER|ENQUE",
+                            "vmType": "VMWare VM",
+                            "cpus": 16,
+                            "memory": 65536,
+                            "osName": "LINUX",
+                            "osVersion": "5.14.21-150400.24.144-default",
+                            "serverRole": "",
+                            "location": "Germany: Frankfurt"
+                          }
+                        ],
+                        "databases": [
+                          {
+                            "id": "11b0dbb1-a90e-312e-b3e6-2f8839971b2c",
+                            "name": "A10",
+                            "type": "SAP HANA Multi-Database Container",
+                            "isSystemDatabase": false,
+                            "release": "2.00.079.02.1734604810",
+                            "version": "2.00",
+                            "supportPackage": "079",
+                            "patchVersion": "02"
+                          }
+                        ],
+                        "InstalledSoftware": [
+                          {
+                            "id": "b5ae5d27-3a0a-3d01-9a45-e5cbd54356ae",
+                            "name": "KRNL64UC",
+                            "type": "KERNEL",
+                            "prodOffName": "",
+                            "versNo": "789",
+                            "prodVersType": "",
+                            "suppPackage": "200",
+                            "patchVers": ""
+                          },
+                          {
+                            "id": "5dd4496e-72d2-3f04-b99d-b4fdbdd4e009",
+                            "name": "HDB",
+                            "type": "DB",
+                            "prodOffName": "",
+                            "versNo": "2.00",
+                            "prodVersType": "",
+                            "suppPackage": "079",
+                            "patchVers": "02"
+                          }
+                        ],
+                        "relatedSystems": [
+                          {
+                            "id": "e9eb27b0-53a4-40ed-a050-167a8eddcdfd",
+                            "name": "H10",
+                            "type": "SAP HANA Database",
+                            "description": "H10",
+                            "systemNumber": "123456789"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "CloudServices": {
+                    "description": "The landscape objects for cloud services",
+                    "value": [
+                      {
+                        "lmsId": "e5fd8c2e-4326-4813-befa-23b22c148004",
+                        "name": "MyS4HANACloud_01",
+                        "description": "MyS4HANACloud_01 (0M276IB)",
+                        "objectType": "CloudService",
+                        "source": "IMPORTED",
+                        "systemNumber": "dd0614533144",
+                        "systemType": "",
+                        "role": "PROD",
+                        "mainUrl": "https://my301149.s4hana.ondemand.com",
+                        "logonUrl": "",
+                        "location": "Germany: Frankfurt",
+                        "customerNumber": "9998887",
+                        "customerName": "The CALM Company",
+                        "externalId": "100",
+                        "serviceType": "SAP_S4HANA",
+                        "serviceTypeLabel": "SAP S/4HANA Cloud",
+                        "deploymentModel": "SAP Public Cloud"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No landscape objects found for given request...",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid Input field objType, Valid Values are \"CloudService\", \"TechnicalSystem\", Please provide correct value"
+                },
+                "examples": {
+                  "Invalid Input parameter Object Type": {
+                    "description": "The request parameter passed is not valid.",
+                    "value": [
+                      {
+                        "error": "Input validation error",
+                        "details": "Valid values are \"CloudService\" and \"TechnicalSystem\"",
+                        "message": "Invalid request Parameter value(s): LogicalSystem for type",
+                        "attribute": "objType"
+                      }
+                    ]
+                  },
+                  "Invalid Input parameters": {
+                    "description": "The request parameter(s) passed are not valid.",
+                    "value": [
+                      {
+                        "error": "Input validation error",
+                        "details": "Valid values are \"CloudService\" and \"TechnicalSystem\"",
+                        "message": "Invalid request Parameter value(s): LogicalSystem for type",
+                        "attribute": "objType"
+                      },
+                      {
+                        "error": "Input validation error",
+                        "details": "Valid values are \"IMPORTED\", \"REGISTERED\" and \"Manual\"",
+                        "message": "Invalid request Parameter value(s): INVALID for type",
+                        "attribute": "source"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An Internal Server error occurred",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "calm-api.processauthoring.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/properties": {
+      "get": {
+        "tags": [
+          "Landscape Objects"
+        ],
+        "summary": "Public API to read the properties of the Landscape Objects",
+        "description": "A public API that allows users to retrieve properties associated with landscape objects, such as cloud services or technical systems, from the Landscape Management Service in SAP Cloud ALM. These properties specifically apply to landscape objects that have been imported from the Cloud Landscape Directory (CLD).\n\nThe properties encompass various types of information, including details about the product, URLs, and additional attributes like subaccount ID, entitlement tenant ID, and external ID. These properties provide valuable insights and configuration data related to the landscape objects, enabling users to effectively manage and utilize their cloud resources within the SAP Cloud ALM environment.",
+        "externalDocs": {
+          "description": "Refer the SAP Help of Landscape Management Service for more information",
+          "url": "https://wiki.wdf.sap.corp/wiki/x/mxv_ig"
+        },
+        "operationId": "getProperties",
+        "parameters": [
+          {
+            "name": "lmsId",
+            "in": "query",
+            "description": "LMS ID is a unique identifier used to identify a specific tenant or technical system within a landscape. A landscape typically consists of multiple technical systems that are connected to each other and used to support various business processes \n\n An LMS ID will be assigned to a tenant or technical system during the initial setup or configuration of the landscape \n\n Overall, the LMS ID plays a critical role in ensuring effective landscape management and maintaining the reliability and availability of the systems and processes within the landscape. \n\n When a new tenant or technical system is registered within a landscape management, the LMS ID is often sent as a response to the registration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved properties",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Cloud Services": {
+                    "description": "The properties of cloud services imported from Cloud Landscape Directory",
+                    "value": {
+                      "businesstypeid": "zh421",
+                      "ppmsproductoffname": "sap workflow service",
+                      "systemid": "testworkflow",
+                      "subaccountid": "ecd56784-0aea-4379-7680-093a1dcff346",
+                      "subaccountdisplayname": "global_wfs_01",
+                      "lifecyclestatus": "live",
+                      "systemnamesapdefault": "ecd56784-0aea-4379-7680-093a1dcff346",
+                      "cldsystemrole": "hcp_wfs",
+                      "datacentertext": "netherlands: amsterdam",
+                      "ppmsproductid": "73554900100800000555",
+                      "ppmsprodlineoffname": "sap business technology platform",
+                      "ppmsproductname": "sap workflow service",
+                      "leadingsystemnumber": "600190345",
+                      "id": "00163ebb8df71eecada9c8a468df34567",
+                      "productinstancetype": "cloud",
+                      "customername": "The CALM Company",
+                      "systemidsap": "cloud",
+                      "entitlementtenantid": "5546678456768",
+                      "searchterm": "ecd56784-0aea-4379-7680-093a1dcff346",
+                      "ppmsprodlineid": "73555000100700000172",
+                      "infrastructureprovider": "azure",
+                      "globalaccountid": "ca31510test123globalaccount",
+                      "systemnumber": "345567346574",
+                      "lastchangedatetime": "2022-12-08t02:29:17.300000+00:00",
+                      "systemname": "02c60da8-35b5-4eae-8ecc-9aedddd288b2",
+                      "datacenterid": "xmj",
+                      "systemscplandscapeid": "cf-eu20",
+                      "organizationid": "5935b66c-8561-4238-a890-cebc5cab986a",
+                      "spaceid": "443efbc8-s34c-485a-8bfc-edc44bkjeiut",
+                      "installationnumber": "657345768",
+                      "customerid": "12345",
+                      "systemrole": "production",
+                      "systemscpuniverse": "100",
+                      "crmcustomerid": "54321"
+                    }
+                  },
+                  "Technical System": {
+                    "description": "The landscape objects for cloud services",
+                    "value": {
+                      "DataCenterID": "XG5",
+                      "lifecycleStatus": "LIVE",
+                      "DataCenterText": "Belgium: St. Ghislain",
+                      "leadingSystemExternalId": "KHJDFUE",
+                      "SystemNameSapDefault": "BEN000",
+                      "PpmsProdversId": "01200314690900005117",
+                      "PpmsProductId": "01200314690800000700",
+                      "SystemIdSap": "CLOUD",
+                      "PpmsProductOffName": "HEC - ABAP System",
+                      "CldSystemRole": "HEC_ABAP",
+                      "PpmsProdversOfficialName": "SAP enhancement package 3 for SAP CRM 7.0",
+                      "managedBy": "SAP Cloud",
+                      "lastChangeDateTime": "2022-03-17T19:56:46.893000+00:00",
+                      "PpmsProductName": "HEC - ABAP System",
+                      "SystemName": "BEN000",
+                      "InstallationNumber": "0983498549623",
+                      "id": "0016MARIANTONYNHE9425DFFB1EBENU",
+                      "CustomerName": "The CALM Company",
+                      "productInstanceType": "sap-managed-cloud",
+                      "PpmsProdLineOffName": "SAP Customer Relationship Management",
+                      "systemExternalId": "SCACOG",
+                      "infrastructureProvider": "GCP",
+                      "PpmsProdLineId": "73554900100700000892",
+                      "SystemId": "BEN",
+                      "leadingSystemNumber": "092385894756",
+                      "PpmsProdversRelease": "EHP3 FOR SAP CRM 7.0",
+                      "CustomerId": "12345",
+                      "SearchTerm": "BEN000",
+                      "crmCustomerId": "54321",
+                      "businessTypeId": "ZH050",
+                      "SystemNumber": "098345345345",
+                      "Systemrole": "Administration",
+                      "PpmsProdvers": "EHP3 FOR SAP CRM 7.0",
+                      "PpmsProdversName": "EHP3 FOR SAP CRM 7.0",
+                      "mainApplHostFQDN": "bentestmycalm.irl.hec.calm.de"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No properties for a given landscape objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "In case the provided lmsId does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid Input field objType, Valid Values are \"CloudService\", \"TechnicalSystem\", Please provide correct value"
+                },
+                "examples": {
+                  "lmsID does not exists": {
+                    "description": "The lmsId does not exists in the Landscape Management Service",
+                    "value": {
+                      "error": "not found",
+                      "details": "The LMS ID does not exists in the Landscape Management Service",
+                      "message": "There should be a cloud service or technical system exists in the Landscape Management Service (LMS). The given LMS ID 20116321-d6dc-4a54-93e9-aa7b81f8d664 does not exists in LMS",
+                      "attribute": "lmsId"
+                    }
+                  },
+                  "Invalid Input parameters": {
+                    "description": "The request parameter(s) passed are not valid.",
+                    "value": [
+                      {
+                        "error": "Input validation error",
+                        "details": "Valid values are \"CloudService\" and \"TechnicalSystem\"",
+                        "message": "Invalid request Parameter value(s): LogicalSystem for type",
+                        "attribute": "objType"
+                      },
+                      {
+                        "error": "Input validation error",
+                        "details": "Valid values are \"SLIS\", \"REGISTERED\" and \"Manual\"",
+                        "message": "Invalid request Parameter value(s): INVALID for type",
+                        "attribute": "source"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "In case the provided lmsId is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The lmsId should be a valid UUID, Please provide correct value"
+                },
+                "examples": {
+                  "lmsID is not valid": {
+                    "description": "The lmsId is not valid as it need to be a proper UUID format",
+                    "value": {
+                      "error": "Input validation error",
+                      "details": "Valid values should be of the type UUID. For example: 3dea2ad6-af7b-480c-b1f9-e85f9b78915b",
+                      "message": "Invalid request Parameter value(s): 20116321-d6dc-4a54-93e9-tet for lmsId",
+                      "attribute": "lmsId"
+                    }
+                  },
+                  "lmsId is not in the request parameter": {
+                    "description": "The request parameter(s) is not passed",
+                    "value": {
+                      "timestamp": 1685113903903,
+                      "status": 400,
+                      "error": "Bad Request",
+                      "path": "/properties"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/businessServices": {
+      "get": {
+        "tags": [
+          "Landscape Objects"
+        ],
+        "summary": "Public API to read Business Service with connections, relations and properties",
+        "description": "A public API that allows users to retrieve business service by landscape management object id, from the Landscape Management Service in SAP Cloud ALM. Business services can be used to represent a business functionality. This allows to abstract from the technical landscape details, which are typically unknown to the business users.\n\nThe business service process the cloud service status events (disruption, degradation, maintenance, communication), which are communicated by SAP in SAP for Me in the aspect of the corresponding business services. This allows you to see which business functionality is - or was - affected by a downtime event of a cloud service. \n \nIn addition, customer can define own status events on cloud services and technical systems. This is especially useful for your on-premise systems, which are not covered by SAP in the Cloud Availability Center, as they are operated by the customer. Here you can define e.g. planned maintenances or downtimes for your own systems and communicate this to your end users",
+        "externalDocs": {
+          "description": "Refer the SAP Help of Landscape Management Service for more information",
+          "url": "https://wiki.wdf.sap.corp/wiki/x/mxv_ig"
+        },
+        "operationId": "getBusinessServiceDetails",
+        "parameters": [
+          {
+            "name": "lmsId",
+            "in": "query",
+            "description": "LMS ID is a unique identifier used to identify a specific business service within a landscape. A Business Service is typically created by usecase to model their business process or system landscape \n\n Overall, the LMS ID plays a critical role in ensuring effective landscape management and maintaining the reliability and availability of the systems and processes within the landscape. \n\n This ID can be retrieved using the landscapeObjects API",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved business service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BusinessServiceApiModel"
+                },
+                "examples": {
+                  "Business service details": {
+                    "description": "The properties of cloud services imported from Cloud Landscape Directory",
+                    "value": {
+                      "headers": {
+                        "description": "Lead to cash Business service",
+                        "name": "LeadToCash",
+                        "usecase": "LMS",
+                        "connections": [
+                          {
+                            "id": "06d1bb91-13d6-4445-8314-8e7284f6d76d",
+                            "role": "RoleTextSys"
+                          },
+                          {
+                            "id": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+                            "role": "RoleSystem"
+                          }
+                        ],
+                        "props": [
+                          {
+                            "name": "When",
+                            "pValues": [
+                              "Feb",
+                              "Jul",
+                              "Nov",
+                              "Dec"
+                            ]
+                          },
+                          {
+                            "name": "Where",
+                            "pValues": [
+                              "Germany",
+                              "UK",
+                              "usa"
+                            ]
+                          },
+                          {
+                            "name": "Until",
+                            "pValues": [
+                              "2023-02-28"
+                            ]
+                          }
+                        ],
+                        "relations": [
+                          {
+                            "source": "bf0930eb-75f4-417e-a8ea-a303de8a5f64",
+                            "target": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+                            "category": "account_dependency",
+                            "type": "globalaccount_dependency"
+                          },
+                          {
+                            "source": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+                            "target": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+                            "category": "account_dependency",
+                            "type": "globalaccount_dependency"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content available for the business service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "In case the provided lmsId does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid Input field objType, Valid Values are \"CloudService\", \"TechnicalSystem\", Please provide correct value"
+                },
+                "examples": {
+                  "lmsID for business service does not exists": {
+                    "description": "The lmsId for Business service does not exists in the Landscape Management Service",
+                    "value": {
+                      "error": "not found",
+                      "details": "The LMS ID does not exists in the Landscape Management Service",
+                      "message": "There should be a cloud service or technical system exists in the Landscape Management Service (LMS). The given LMS ID a593e851-b8a1-4a45-ae06-67d1f62574 does not exists in LMS",
+                      "attribute": "lmsId"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "In case the provided lmsId is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "The lmsId should be a valid UUID, Please provide correct value"
+                },
+                "examples": {
+                  "lmsID is not valid": {
+                    "description": "The lmsId is not valid as it need to be a proper UUID format",
+                    "value": {
+                      "error": "Input validation error",
+                      "details": "Valid values should be of the type UUID. For example: 3dea2ad6-af7b-480c-b1f9-e85f9b78915b",
+                      "message": "Invalid request Parameter value(s): dsfgdfg for lmsId",
+                      "attribute": "lmsId"
+                    }
+                  },
+                  "lmsId is not in the request parameter": {
+                    "description": "The request parameter(s) is not passed",
+                    "value": {
+                      "timestamp": 1699274966824,
+                      "status": 400,
+                      "error": "Bad Request",
+                      "path": "/businessServices"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "calm-api.processauthoring.read"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oAuth2": {
+        "type": "oauth2",
+        "description": "To use this API, you need to obtain the OAuth client credentials (client ID and secret) using the SAP S/4HANA Cloud Platform cockpit.<br>After that, pass these client credentials to the SAP S/4HANA Cloud Platform token endpoint to obtain an access token.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://{identityzone}.authentication.{region}.hana.ondemand.com/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    },
+    "schemas": {
+      "LandscapeObjectsApiModel": {
+        "required": [
+          "description",
+          "lmsId",
+          "name",
+          "objectType",
+          "role",
+          "serviceType",
+          "serviceTypeLabel",
+          "source",
+          "systemNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "lmsId": {
+            "title": "The LMS ID is a unique identifier used to identify SAP tenants and technical system.",
+            "maxLength": 36,
+            "type": "string",
+            "description": "LMS ID is a unique identifier used to identify a specific tenant or technical system within a landscape. A landscape typically consists of multiple technical systems that are connected to each other and used to support various business processes \n\n An LMS ID will be assigned to a tenant or technical system during the initial setup or configuration of the landscape \n\n Overall, the LMS ID plays a critical role in ensuring effective landscape management and maintaining the reliability and availability of the systems and processes within the landscape. \n\n When a new tenant or technical system is registered within a landscape management, the LMS ID is often sent as a response to the registration request.",
+            "example": "f97b5b22-7477-43f1-a96b-1d42718f4820"
+          },
+          "name": {
+            "title": "The name given to a cloud service tenant or on-premise technical system, used as a identifier for identification.",
+            "maxLength": 256,
+            "type": "string",
+            "description": "A tenant name is an identifier used to differentiate and manage different instances of a cloud service within a multi-tenant environment. It is typically a string of characters that is associated with a specific instance of the service \n\n In the case of on-premise technical systems, the System ID serves a similar purpose as the tenant name for cloud services \n\n It is an identifier used to differentiate and manage different instances of a technical system within a landscape.",
+            "example": "MyS4HANACloud_01"
+          },
+          "description": {
+            "title": "providing information about Cloud Services and Technical System.",
+            "maxLength": 5000,
+            "type": "string",
+            "description": "The description field is used to provide additional information about a cloud service or technical system \n\n It can be used to describe the purpose, features, or any other relevant information about the service or system.",
+            "example": "MyS4HANACloud_01 (0M276IB)"
+          },
+          "objectType": {
+            "title": "The object type field is used to identify whether a landscape object is a cloud service or an on-premise technical system in SAP Landscape Management.",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Object type refers to the type of object being managed within a landscape. The object type can be cloud service or technical system, and it represents the category or classification of the object being managed. \n\n The object type in Landscape Management can contain both cloud services and technical systems.",
+            "example": "CloudService",
+            "enum": [
+              "CloudService",
+              "TechnicalSystem"
+            ]
+          },
+          "source": {
+            "title": "Identifying the Origin of a Cloud Service or Technical System.",
+            "maxLength": 64,
+            "type": "string",
+            "description": "In the context of cloud services or technical systems, a source refers to the origin or location from where the service or system was imported or created. \n\n It can help to identify the origin of the service or system, which can be useful for troubleshooting, auditing, or compliance purposes. \n\n There can be different types of sources, such as IMPORTED (automatically discovered from Cloud Landscape Directory), REGISTERED, or Manually created.",
+            "example": "IMPORTED",
+            "enum": [
+              "IMPORTED",
+              "Manual",
+              "REGISTERED"
+            ]
+          },
+          "systemNumber": {
+            "title": "Identifying Cloud Services and On-Premise Technical Systems with Unique IDs",
+            "maxLength": 64,
+            "type": "string",
+            "description": "System number is a term used in SAP to refer to the identifier of a specific system within a landscape. In the case of cloud services, it typically refers to the tenant ID of the service, while in the case of on-premise systems, it refers to the system number of the installation. \n\n The SystemNumber is an important parameter that is used to uniquely identify a system or service within a landscape. It is often required for authentication, authorization, and other configuration tasks.",
+            "example": "dd0614533144"
+          },
+          "systemType": {
+            "title": "Identifying the Type of On-Premise Technical System",
+            "maxLength": 64,
+            "type": "string",
+            "description": "The systemType field is a parameter used to identify the type of on-premise technical system in SAP Landscape Management. \n\n  On-premise technical systems can be further categorized based on their system type, such as ABAP or Java. \n\n  It will provide the users with a clear understanding of the type of on-premise technical system available and how to interact with it.",
+            "example": "ABAP",
+            "enum": [
+              "ABAP",
+              "JAVA",
+              "OTHERS"
+            ]
+          },
+          "installationNumber": {
+            "type": "string",
+            "description": "The installationNumber field is a parameter used to identify the installationNumber of on-premise technical system in SAP Landscape Management.",
+            "example": 543010123,
+            "maxLength": 64,
+            "title": "Identifying the installationNumber of On-Premise Technical System"
+          },
+          "role": {
+            "title": "Role Definition for Identifying Landscape Type in Cloud Services and Technical Systems",
+            "maxLength": 64,
+            "type": "string",
+            "description": "The role of a cloud service or technical system is used to identify the landscape type of the system, such as whether it is a development, test, or production system.",
+            "example": "PROD",
+            "enum": [
+              "DEVELOP",
+              "DEV",
+              "TEST",
+              "PROD"
+            ]
+          },
+          "mainUrl": {
+            "title": "root URL for accessing a specific API or application",
+            "maxLength": 256,
+            "type": "string",
+            "description": "The main URL field is a key parameter used in RESTful or web services that provides the root URL for accessing a specific API or application. It can be used as a reference point to access other resources or endpoints within the API or application.",
+            "example": "https://mysapcloudalm.sap.ondemand.com"
+          },
+          "logonUrl": {
+            "title": "logon URL for accessing a specific resource of application",
+            "maxLength": 256,
+            "type": "string",
+            "description": "The logon URL is the web address used to access the authentication page for a particular system or application. \n\n The logon URL may be different for different systems or applications and can be provided by the system administrator or application developer. It is typically used as a starting point for accessing the system or application.",
+            "example": "https://mysapcloudalm.sap.ondemand.com"
+          },
+          "location": {
+            "title": "Data Center Location: The Physical Location of datacenter where tenants are deployed",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Data center location refers to the physical location where the cloud service provider hosts its data centers that serve the tenants. \n\n Each tenant may have its data stored in a specific data center location, depending on the provider's policies and the tenant's preferences.",
+            "example": "XG5"
+          },
+          "customerNumber": {
+            "title": "CustomerNumber may refer to the unique identifier assigned to a customer.",
+            "maxLength": 64,
+            "type": "string",
+            "description": "CustomerNumber is a unique identifier that represents a customer in a business context. \n\n It is typically used in enterprise systems to distinguish one customer from another and to associate data and transactions with a specific customer.",
+            "example": "3445567"
+          },
+          "customerName": {
+            "title": "legal name of the company",
+            "maxLength": 256,
+            "type": "string",
+            "description": "CustomerName is the name of the individual or organization that has purchased a software product or service. \n\n It is the primary identifier of the customer in the software provider's database and is often used in billing, support, and communication with the customer.",
+            "example": "The CALM Company"
+          },
+          "externalId": {
+            "title": "The external ID can be any unique value that is recognized by systems, such as a name, number, or code.",
+            "maxLength": 36,
+            "type": "string",
+            "description": "External ID is a unique identifier that is assigned to a tenant. \n\n It is used to establish a cross-system reference to the tenant, allowing for data integration and synchronization between multiple systems. \n\n This ID is available in the Landscape Management application of SAP CLM. (for example, it will be a Subaccount ID for the BTP platform.",
+            "example": "e93e5945-9908-4fb8-89fe-df83c2710b3c"
+          },
+          "serviceType": {
+            "title": "service type refers to the category of service that a product or technology solution belongs to.",
+            "maxLength": 64,
+            "type": "string",
+            "description": "The service type refers to the type of product or service that the tenant has subscribed to. It is essentially a classification or categorization of the subscribed product or service, which can help in identifying and managing the features, functionalities, and resources associated with it. \n\n This ID is available in the Landscape Management application of SAP CALM. \n\n you can check more information here https://support.sap.com/en/alm/sap-cloud-alm/operations/expert-portal/setup-managed-services.html",
+            "example": "SAP_S4HANA"
+          },
+          "serviceTypeLabel": {
+            "title": "label or name that is assigned to a product or service.",
+            "maxLength": 128,
+            "type": "string",
+            "description": "Service type label may refer to the legal name or trademarked name of the product or service. \n\n It is often used in documentation, marketing materials, and legal agreements to refer to the product or service by its official name.",
+            "example": "SAP_S4HANA"
+          },
+          "deploymentModel": {
+            "title": "Choose the Deployment Model of a Cloud Service or Technical System.",
+            "type": "string",
+            "description": "The deployment model field describes where a cloud service or technical system is deployed. The possible values are:\n\nSAP Public Cloud: A public cloud service offered by SAP\n\nBTP System: A public cloud service by SAP that is based on SAP BTP\n\nSAP Private Cloud: The system is installed at and operated by SAP Enterprise Cloud Services\n\nOn-Premise: The system is installed on the customer premises or a non-SAP hyperscaler offering\n\nOther Public Cloud: A public cloud service offered by another vendor.",
+            "enum": [
+              "SAP Public Cloud",
+              "SAP Private Cloud",
+              "On-Premise",
+              "Other Public Cloud",
+              "BTP System"
+            ],
+            "example": "SAP Public Cloud",
+            "maxLength": 64
+          },
+          "logicalSystems": {
+            "title": "ABAP Clients",
+            "maxLength": 128,
+            "type": "array",
+            "description": "The collection of logical systems. Its applicable only for Technical ABAP systems. \n\n It is a three-digit alphanumeric code that identifies a logical client system in a landscape of SAP systems. Logical systems are used for communication purposes between systems in a distributed environment.",
+            "example": 200,
+            "items": {
+              "$ref": "#/components/schemas/LogicalSystemApiModel"
+            }
+          },
+          "instances": {
+            "title": "instances",
+            "maxLength": 128,
+            "type": "array",
+            "description": "The collection of instances. Its applicable only for Technical ABAP systems.",
+            "example": 200,
+            "items": {
+              "$ref": "#/components/schemas/CldInstanceApiModel"
+            }
+          },
+          "databases": {
+            "title": "databases",
+            "maxLength": 128,
+            "type": "array",
+            "description": "The collection of databases. Its applicable only for Technical ABAP systems.",
+            "example": 200,
+            "items": {
+              "$ref": "#/components/schemas/CldDatabaseApiModel"
+            }
+          },
+         "Installed Software": {
+            "title": "Installed Software",
+            "maxLength": 128,
+            "type": "array",
+            "description": "The collection of installed software. Its applicable only for Technical ABAP systems.",
+            "example": 200,
+            "items": {
+              "$ref": "#/components/schemas/CldInstalledSoftwareApiModel"
+            }
+          },
+         "related systems": {
+            "title": "related systems",
+            "maxLength": 128,
+            "type": "array",
+            "description": "The collection of related systems. Its applicable only for Technical ABAP systems.",
+            "example": 200,
+            "items": {
+              "$ref": "#/components/schemas/RelatedSystemApiModel"
+            }
+          }
+        },
+        "description": "The SAP Cloud ALM Landscape API is a publicly available API that provides details about the landscapes associated with SAP Cloud Application Lifecycle Management. \n\n This API is designed to provide comprehensive information about the cloud services and technical systems that are registered within the landscape. \n\n This includes information about the logical systems that are associated with the technical systems. \n\n By consuming this API, users can easily retrieve information about the landscape that they need to manage their systems and ensure that they are running smoothly. \n\n The API is designed to be easy to use and can be accessed from any system that has internet connectivity. \n\n With this API, users can easily integrate landscape information into their own systems, enabling them to make informed decisions about system maintenance and management."
+      },
+      "LogicalSystemApiModel": {
+        "title": "ABAP Clients",
+        "maxLength": 128,
+        "required": [
+          "client",
+          "lmsId",
+          "role"
+        ],
+        "type": "object",
+        "properties": {
+          "LMS ID": {
+            "title": "The LMS ID is a unique identifier used to identify SAP tenants and technical system.",
+            "maxLength": 36,
+            "type": "string",
+            "description": "LMS ID is a unique identifier used to identify a specific tenant or technical system within a landscape. A landscape typically consists of multiple technical systems that are connected to each other and used to support various business processes \n\n An LMS ID will be assigned to a tenant or technical system during the initial setup or configuration of the landscape \n\n Overall, the LMS ID plays a critical role in ensuring effective landscape management and maintaining the reliability and availability of the systems and processes within the landscape. \n\n When a new tenant or technical system is registered within a landscape management, the LMS ID is often sent as a response to the registration request.",
+            "example": "f97b5b22-7477-43f1-a96b-1d42718f4820"
+          },
+          "client": {
+            "title": "ABAP client is identified by a three-digit number, which is unique within the SAP system.",
+            "maxLength": 3,
+            "type": "string",
+            "description": "An ABAP client is a logical subset of an SAP system that provides a separate environment for development, testing, or production purposes.",
+            "example": "200"
+          },
+          "system role": {
+            "title": "Role Definition for Identifying Landscape Type per logical system.",
+            "maxLength": 64,
+            "type": "string",
+            "description": "The role of a cloud service or technical system is used to identify the landscape type of the system, such as whether it is a development, test, or production system.",
+            "example": "PROD",
+            "enum": [
+              "DEVELOP",
+              "DEV",
+              "TEST",
+              "PROD"
+            ]
+          }
+        },
+        "description": "The Logical System entity represents one or more ABAP systems within the SAP Cloud ALM landscape. \n\n It provides client details such as the three-digit client number and the role of the client, which can be Development, Test or Production. \n\n The Logical System entity is a deep entity within the public API, providing a comprehensive view of the ABAP systems within the SAP Cloud ALM landscape. \n\n By including this entity in your API, you can enable developers and administrators to manage the logical systems of their ABAP systems more effectively.",
+        "example": 200
+      },
+      "CldDatabaseApiModel": {
+        "type": "object",
+        "description": "The Database entity represents one or more databases of the technical system. \\n\\n It provides details of the database, like DB type, version, patch level, etc.\\n\\n This is a deep entity within the public API, providing a comprehensive view of the technical systems within the SAP Cloud ALM landscape.",
+        "example": 200,
+        "maxLength": 128,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "description": "ID is a unique identifier used to identify this database.",
+            "example": "1502ef2c-ad47-3169-b399-aecb94efb7c5",
+            "maxLength": 36,
+            "title": "The Database ID is a unique identifier used to identify this database."
+          },
+          "Name": {
+            "type": "string",
+            "description": "The name of the database.",
+            "example": "A10",
+            "maxLength": 64,
+            "title": "Database name without any special characters."
+          },
+          "Type": {
+            "type": "string",
+            "description": "The database type, e.g. SAP HANA, IBM DB2, etc.",
+            "example": "SAP HANA",
+            "maxLength": 16,
+            "title": "Database Type."
+          },
+          "isSystemDatabase": {
+            "type": "boolean",
+            "description": "Whether this database is the system database.",
+            "example": true,
+            "title": "SystemDatabase"
+          },
+          "Release Number": {
+            "type": "string",
+            "description": "Release number of the database.",
+            "example": "2.00.079.02.1734604810",
+            "maxLength": 40,
+            "title": "Release Number"
+          },
+          "Database Version": {
+            "type": "string",
+            "description": "Version of the database.",
+            "example": 4.0,
+            "maxLength": 30,
+            "title": "Database Version"
+          },
+          "Support Package": {
+            "type": "string",
+            "description": "Support Package level of the databasde.",
+            "example": "015",
+            "maxLength": 10,
+            "title": "Support Package"
+          },
+          "Patch Version": {
+            "type": "string",
+            "description": "Patch Version of the database.",
+            "example": "02",
+            "maxLength": 128,
+            "title": "Patch Version"
+          }
+        },
+        "required": ["id",
+          "isSystemDatabase",
+          "name",
+          "patchVersion",
+          "release",
+          "supportPackage",
+          "type",
+          "version"],
+        "title": "databases"
+      },
+      "CldInstalledSoftwareApiModel": {
+        "type": "object",
+        "description": "The installed software product and key components of the technical system.\n\n This is a deep entity within the public API, providing a comprehensive view of the technical systems within the SAP Cloud ALM landscape.",
+        "example": 200,
+        "maxLength": 128,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "description": "ID is a unique identifier used to identify the installed software product.",
+            "example": "1502ef2c-ad47-3169-b399-aecb94efb7c5",
+            "maxLength": 36,
+            "title": "The Instance ID is a unique identifier used to identify this installed software product."
+          },
+          "Name": {
+            "type": "string",
+            "description": "Installed Product Name.",
+            "example": "KRNL64UC",
+            "maxLength": 128,
+            "title": "Installed Product Name."
+          },
+          "Type": {
+            "type": "string",
+            "description": "The software type, e.g. Product, Kernel, etc. (the single software components are not imported into Landscape Management.",
+            "example": "KERNEL",
+            "maxLength": 128,
+            "title": "Installed Product Type"
+          },
+          "Product Official Name": {
+            "type": "string",
+            "description": "The official name of the installed product.",
+            "example": "text",
+            "maxLength": 128,
+            "title": "Product Official Name"
+          },
+          "Version Number": {
+            "type": "string",
+            "description": "The Version Number of the installed product.",
+            "example": 789,
+            "maxLength": 64,
+            "title": "Product Version Number"
+          },
+          "Version Type": {
+            "type": "string",
+            "description": "The type of the product version, e.g. Standalone or Add-On.",
+            "example": "Standalone",
+            "maxLength": 128,
+            "title": "Version Type"
+          },
+          "Support Package": {
+            "type": "string",
+            "description": "Support Package Level of the installed product.",
+            "example": 200,
+            "maxLength": 64,
+            "title": "Support Package"
+          },
+          "Patch Version": {
+            "type": "string",
+            "description": "The Patch Version of the installed product.",
+            "example": "02",
+            "maxLength": 64,
+            "title": "Patch Version"
+          }
+        },
+        "required": ["id",
+          "name",
+          "patchVers",
+          "prodOffName",
+          "prodVersType",
+          "suppPackage",
+          "type",
+          "versNo"],
+        "title": "Installed Software"
+      },
+      "CldInstanceApiModel": {
+        "type": "object",
+        "description": "The Instance entity represents one or more technical instances of the technical system. \\n\\n It provides details of a running instance, such as CPU, Memory, and OS-related information. \\n\\n This is a deep entity within the public API, providing a comprehensive view of the technical systems within the SAP Cloud ALM landscape.",
+        "example": 200,
+        "maxLength": 128,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "description": "ID is a unique identifier used to identify a specific instance.",
+            "example": "1502ef2c-ad47-3169-b399-aecb94efb7c5",
+            "maxLength": 36,
+            "title": "The Instance ID is a unique identifier used to identify this instance."
+          },
+          "Name": {
+            "type": "string",
+            "description": "The instance name.",
+            "example": "vhmtua",
+            "maxLength": 64,
+            "title": "The instance name without any special characters."
+          },
+          "Type": {
+            "type": "string",
+            "description": "Type of this instance type, e.g. ABAP Central Services.",
+            "example": "ASCS",
+            "maxLength": 10,
+            "title": "Instance Type."
+          },
+          "FQDN": {
+            "type": "string",
+            "description": "Fully Qualified Domain Name of this instance.",
+            "example": "vhmtua.company.com",
+            "maxLength": 255,
+            "title": "Fully Qualified Domain Name"
+          },
+          "Instance Number": {
+            "type": "string",
+            "description": "Instance Number of the instance, it is just a 2 digital number.",
+            "example": "01",
+            "maxLength": 2,
+            "title": "Instance Number"
+          },
+          "Ip Address": {
+            "type": "string",
+            "description": "IP Address of the Instance server.",
+            "example": "53.254.253.28",
+            "maxLength": 64,
+            "title": "IP Address"
+          },
+          "Features": {
+            "type": "string",
+            "description": "The features stand for the processes running on the instance, e.g. message server, ABAP gateway, enqueue server etc, separated with |",
+            "example": "MESSAGESERVER|ENQUE",
+            "maxLength": 256,
+            "title": "Features"
+          },
+          "VM Type": {
+            "type": "string",
+            "description": "The virtualization solution of this instance.",
+            "example": "VMWare VM",
+            "maxLength": 60,
+            "title": "VM Type"
+          },
+          "CPUs": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The count of the CPUs for this instance.",
+            "example": 6,
+            "title": "CPUs"
+          },
+          "Memory": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Memory size of this instance, in MB.",
+            "example": 65536,
+            "title": "Memory"
+          },
+          "OS Name": {
+            "type": "string",
+            "description": "Operation System Name of this instance.",
+            "example": "Linux",
+            "maxLength": 32,
+            "title": "OS Name"
+          },
+          "OS Version": {
+            "type": "string",
+            "description": "Operation System Version of this instance.",
+            "example": 11.2,
+            "maxLength": 256,
+            "title": "OS Version"
+          },
+          "Service Role": {
+            "type": "string",
+            "description": "The server role for SAP HANA instances, e.g. master.",
+            "example": "master",
+            "maxLength": 64,
+            "title": "Service Role"
+          },
+          "Location": {
+            "type": "string",
+            "description": "The location of the data center of this instance.",
+            "example": "Germany: Frankfurt",
+            "maxLength": 256,
+            "title": "Location"
+          }
+        },
+        "required": ["cpus",
+          "features",
+          "fqdn",
+          "id",
+          "instanceNumber",
+          "ipAddress",
+          "location",
+          "memory",
+          "name",
+          "osName",
+          "osVersion",
+          "serverRole",
+          "type",
+          "vmType"],
+        "title": "instances"
+      },
+      "RelatedSystemApiModel": {
+        "type": "object",
+        "description": "The related systems are other technical systems that are used or use the given technical system, e.g., the relation to the SAP HANA database. \\n\\n This is a deep entity within the public API, providing a comprehensive view of the technical systems within the SAP Cloud ALM landscape.",
+        "example": 200,
+        "maxLength": 128,
+        "properties": {
+          "ID": {
+            "type": "string",
+            "description": "ID is a unique identifier used to identify a related system.",
+            "example": "1502ef2c-ad47-3169-b399-aecb94efb7c5",
+            "maxLength": 36,
+            "title": "The ID is a unique identifier used to identify this related system which is being connected with the given technical system."
+          },
+          "Name": {
+            "type": "string",
+            "description": "The system name of this related system.",
+            "example": "H10",
+            "maxLength": 60,
+            "title": "The system name without any special characters."
+          },
+          "System Type": {
+            "type": "string",
+            "description": "The type of the related system.",
+            "example": "SAP HANA Database",
+            "maxLength": 60,
+            "title": "System Type"
+          },
+          "Description": {
+            "type": "string",
+            "description": "The description of this related system.",
+            "example": "test system",
+            "maxLength": 200,
+            "title": "Description"
+          },
+          "System Number": {
+            "type": "string",
+            "description": "System Number of this related system.",
+            "example": 500199793,
+            "maxLength": 60,
+            "title": "System Number"
+          }
+        },
+        "required": ["description",
+          "id",
+          "name",
+          "systemNumber",
+          "type"],
+        "title": "related systems"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "This model describes the response payload if an error occurs from GET Events API",
+        "properties": {
+          "error": {
+            "title": "Error",
+            "type": "string",
+            "description": "Error description",
+            "example": "Input validation error"
+          },
+          "details": {
+            "title": "Error Details",
+            "type": "string",
+            "description": "Detailed description of the error, with steps to resolve the error",
+            "example": "Valid format is: <L|C><Number><H|D|W|M|Y>. Where L stands for Last (doesn't include the current period), C stands for Current (include the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday)."
+          },
+          "message": {
+            "title": "Error Message",
+            "type": "string",
+            "description": "Root cause for the error",
+            "example": "Invalid request Parameter value(s): L900z for period"
+          },
+          "attribute": {
+            "title": "Error Attribute",
+            "type": "string",
+            "description": "Represents the exact attribute causing the error",
+            "example": "period"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "BusinessServiceApiModel": {
+        "required": [
+          "headers"
+        ],
+        "type": "object",
+        "properties": {
+          "headers": {
+            "$ref": "#/components/schemas/Headers"
+          }
+        },
+        "description": "The public API to retrieve the details of the Business Service. \n\n This API is designed to provide comprehensive information about the cloud services, business service and technical systems that are registered within the landscape. \n\n This includes information about the logical systems that are associated with the technical systems. \n\n By consuming this API, users can easily retrieve information about the landscape that they need to manage their systems and ensure that they are running smoothly. \n\n The API is designed to be easy to use and can be accessed from any system that has internet connectivity. \n\n With this API, users can easily integrate landscape information into their own systems, enabling them to make informed decisions about system maintenance and management."
+      },
+      "Connection": {
+        "title": "Connections of Business service",
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "The LMS ID of the cloud service or technical system which is part of Business Service ",
+            "maxLength": 36,
+            "type": "string",
+            "description": "The LMS ID for the connections. The connection can be a cloud service or Technical System LMS ID.",
+            "example": "509f66ab-2092-4bf3-8711-4d762c59e1f6"
+          },
+          "role": {
+            "title": "role of Connection assignment",
+            "maxLength": 64,
+            "type": "string",
+            "description": "A role in a business service typically involves a set of responsibilities and tasks aimed at delivering specific services or support to the business or its clients",
+            "example": "development"
+          }
+        },
+        "description": "The \"connections\" refer to the way various cloud services or technical systems are organized and grouped within that service. \n\n These connections help establish the relationships and dependencies between different components to create a coherent and functional business service",
+        "example": [
+          {
+            "id": "06d1bb91-13d6-4445-8314-8e7284f6d76d",
+            "role": "RoleTextSys"
+          },
+          {
+            "id": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+            "role": "RoleSystem"
+          }
+        ]
+      },
+      "Headers": {
+        "title": "Header of Business service",
+        "required": [
+          "connections",
+          "description",
+          "name",
+          "props",
+          "relations",
+          "usecase"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "title": "The LMS ID is a unique identifier used to identify a business service",
+            "maxLength": 5000,
+            "type": "string",
+            "description": "The description field is used to provide additional information about a business service \n\n It can be used to describe the purpose, features, or any other relevant information about the service or system.",
+            "example": "f97b5b22-7477-43f1-a96b-1d42718f4820"
+          },
+          "name": {
+            "title": "The name to identify a business service. The business service is typically created by the usecases to logically group their Cloud Service or Technical System",
+            "maxLength": 256,
+            "type": "string",
+            "description": "Business service name",
+            "example": "Order To Cash"
+          },
+          "usecase": {
+            "title": "The name of the usecase",
+            "maxLength": 256,
+            "type": "string",
+            "description": "The usecase who created the business service.",
+            "example": "IM"
+          },
+          "connections": {
+            "title": "Connections of Business service",
+            "type": "array",
+            "description": "Connections in a business service represent how different cloud services or technical systems are organized and work together. Think of it as how these parts are linked to form a complete and functional business service",
+            "example": [
+              {
+                "id": "06d1bb91-13d6-4445-8314-8e7284f6d76d",
+                "role": "RoleTextSys"
+              },
+              {
+                "id": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+                "role": "RoleSystem"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Connection"
+            }
+          },
+          "props": {
+            "title": "Properties of Business service",
+            "type": "array",
+            "description": "These properties can have specific values, which are details about those characteristics. They're used to set rules and guidelines for how the service should operate",
+            "example": [
+              {
+                "name": "When",
+                "pValues": [
+                  "Feb",
+                  "Jul",
+                  "Nov",
+                  "Dec"
+                ]
+              },
+              {
+                "name": "Where",
+                "pValues": [
+                  "Germany",
+                  "UK",
+                  "usa"
+                ]
+              },
+              {
+                "name": "Until",
+                "pValues": [
+                  "2023-02-28"
+                ]
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Property"
+            }
+          },
+          "relations": {
+            "title": "Relations of Business service",
+            "type": "array",
+            "description": " In a business service, \"relations\" are like connections that show how different things or parts are related to each other. \n\n For example, consider a customer in an e-commerce business service. The relations might show how that customer is connected to their orders, payments, and shipping information. \n\n These relations help us understand how everything is connected and how data or actions flow between these different elements",
+            "example": [
+              {
+                "source": "bf0930eb-75f4-417e-a8ea-a303de8a5f64",
+                "target": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+                "category": "account_dependency",
+                "type": "globalaccount_dependency"
+              },
+              {
+                "source": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+                "target": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+                "category": "account_dependency",
+                "type": "globalaccount_dependency"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Relation"
+            }
+          }
+        },
+        "description": "The header of the Business services with its name, description and the usecase who manages the Business Service",
+        "example": {
+          "description": "The business service for lead to cash",
+          "name": "LeadToCash",
+          "usecase": "LMS",
+          "connections": [
+            {
+              "id": "06d1bb91-13d6-4445-8314-8e7284f6d76d",
+              "role": "RoleTextSys"
+            },
+            {
+              "id": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+              "role": "RoleSystem"
+            }
+          ],
+          "props": [
+            {
+              "name": "When",
+              "pValues": [
+                "Feb",
+                "Jul",
+                "Nov",
+                "Dec"
+              ]
+            },
+            {
+              "name": "Where",
+              "pValues": [
+                "Germany",
+                "UK",
+                "usa"
+              ]
+            },
+            {
+              "name": "Until",
+              "pValues": [
+                "2023-02-28"
+              ]
+            }
+          ],
+          "relations": [
+            {
+              "source": "bf0930eb-75f4-417e-a8ea-a303de8a5f64",
+              "target": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+              "category": "account_dependency",
+              "type": "globalaccount_dependency"
+            },
+            {
+              "source": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+              "target": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+              "category": "account_dependency",
+              "type": "globalaccount_dependency"
+            }
+          ]
+        }
+      },
+      "Property": {
+        "title": "Properties of Business service",
+        "required": [
+          "name",
+          "pValues"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "property name",
+            "maxLength": 64,
+            "type": "string",
+            "description": "A business service property refers to a characteristic or attribute associated with a particular business service \n\n Business service properties are used to describe, categorize, and manage services within an organization \n\n A business service rule name typically represents a specific rule, guideline, or criterion applied to a business service",
+            "example": "product"
+          },
+          "pValues": {
+            "title": "property value(s)",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Property values, in the context of a business service rule name, refer to the specific data or settings associated with a particular rule. \n\n A business service rule name can encompass one or more property values, each of which defines the specific parameters or conditions that must be met for the rule to be applied.",
+            "example": "SAP S/4HANA"
+          }
+        },
+        "description": "The \"properties\" are characteristics or attributes that define specific aspects of the service. \n\n These properties can have one or more values assigned to them, and they are often associated with rules, which are used to govern how the service operates. \n\n  This attribute \"properties\" are characteristics or attributes that define specific aspects of the service. These properties can have one or more values assigned to them, and they are often associated with rules, which are used to govern how the service operates",
+        "example": [
+          {
+            "name": "When",
+            "pValues": [
+              "Feb",
+              "Jul",
+              "Nov",
+              "Dec"
+            ]
+          },
+          {
+            "name": "Where",
+            "pValues": [
+              "Germany",
+              "UK",
+              "usa"
+            ]
+          },
+          {
+            "name": "Until",
+            "pValues": [
+              "2023-02-28"
+            ]
+          }
+        ]
+      },
+      "Relation": {
+        "title": "Relations of Business service",
+        "required": [
+          "category",
+          "source",
+          "target",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "source": {
+            "title": "The LMS ID of the sender cloud or technical system ",
+            "maxLength": 36,
+            "type": "string",
+            "description": "In the context of a business service that has a source and target cloud service or technical system, the \"source\" field refers to the system or service that generates and sends data or information. It's the origin point where data or processes begin before being transmitted to the target system.",
+            "example": "a593e851-b8a1-4a45-ae06-67d1f62574d8"
+          },
+          "target": {
+            "title": "The LMS ID of the target cloud or technical system ",
+            "maxLength": 36,
+            "type": "string",
+            "description": "Within the framework of integration scenarios in a business service, the 'target' denotes the particular cloud service, technical system, or application that acts as the recipient of data or information originating from the source system. \n\n It serves as the endpoint where data or processes are directed for utilization, storage, or further processing",
+            "example": "e5fd8c2e-4326-4813-befa-23b22c148023"
+          },
+          "category": {
+            "title": "It helps classify the nature of each relationship, making it easier to understand and manage them",
+            "maxLength": 120,
+            "type": "string",
+            "description": "The \"category\" field is used to classify or categorize the type or nature of a relation. \n\n This field provides information about the specific category or group to which a relation belongs, helping to define the nature of the relationship or connection between elements",
+            "example": "technical_integration"
+          },
+          "type": {
+            "title": "Type classifies different data flows and how they're connected",
+            "maxLength": 120,
+            "type": "string",
+            "description": "the \"type\" field is used to identify and specify the nature of data flows and their associated relations. \n\n This field serves the purpose of categorizing and distinguishing different types of data flow or relationships, making it easier to understand and manage them based on their characteristics",
+            "example": "transport_route"
+          }
+        },
+        "description": "In the context of a business service, \"relations\" typically refer to the connections or associations between various elements, components, or entities within the service. These relations help define how different parts of the service interact or depend on each other. \n\n These relations are crucial for understanding the data flow, dependencies, and interactions within the business service. They facilitate the tracking and management of information and processes and help ensure that the service operates smoothly and effectively. \n\n In simpler terms, relations in a business service describe how different parts of the service are connected and work together to achieve specific goals or functions.",
+        "example": [
+          {
+            "source": "bf0930eb-75f4-417e-a8ea-a303de8a5f64",
+            "target": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+            "category": "account_dependency",
+            "type": "globalaccount_dependency"
+          },
+          {
+            "source": "fb4fc131-56fa-4c86-9064-50a75d8d99c5",
+            "target": "408b1af1-a659-48fa-94a5-d1303670a1d9",
+            "category": "account_dependency",
+            "type": "globalaccount_dependency"
+          }
+        ]
+      }
+    }
+  }
+}
