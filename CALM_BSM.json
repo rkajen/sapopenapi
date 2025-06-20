@@ -1,0 +1,576 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SAP Cloud ALM Status Events",
+    "version": "1.0.0",
+    "description": "The SAP Cloud ALM Status Events APIs enables you to extract status events from SAP Cloud ALM. These status events are Disruptions, Degradations or Maintenances. They were either reported by SAP for Me and transferred to SAP Cloud ALM or created in SAP Cloud ALM directly. \n\n The SAP Cloud ALM Status Events APIs comes with **OData** and **Rest** endpoints exposing status events.\n\n With the help of these APIs, you can retrieve event information from Business Service Management. \n\n The following APIs are available:\n\n <table><tr><td><B>Method</td><td><B>API</td><td><B>Description</td></tr><tr><td>GET</td><td>/eventsData</td><td><a href=\"https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html\">OData v4</a> API that returns all events.</td></tr><tr><td>GET</td><td>/events</td><td>REST API that returns all events.</td></tr></table>",
+    "x-targetEndpoint": "https://eu10.alm.cloud.sap",
+    "contact": {
+      "name": "DL CALM_CRUN_BSM_TEAM",
+      "email": "DL_62A96946EC3CA802990EBE66@global.corp.sap"
+    }
+  },
+  "externalDocs": {
+    "description": "API Guide for SAP Cloud ALM: Status Events API",
+    "url": "https://help.sap.com/docs/CloudALM/fe419bfabbdc46dfbddbfd78b21483d5/5592d4bf3de84aefae5f6a9ff92ce96a.html"
+  },
+  "x-sap-stateInfo": {
+    "state": "ACTIVE"
+  },
+  "x-sap-shortText": "Get downtime events (disruptions, degradations, and maintenance) from Business Service Management",
+  "security": [
+    {
+      "oAuth2": []
+    }
+  ],
+  "x-sap-extensible":{"supported":"no"},
+  "x-sap-api-type": "REST",
+  "servers": [
+    {
+      "url": "https://sandbox.api.sap.com/SAPCALM/bsm-service/v1"
+    },
+    {
+      "url": "https://{tenant}.{region}.alm.cloud.sap/api/bsm-service/v1",
+      "variables": {
+        "tenant": {
+          "default": ""
+        },
+        "region": {
+          "description": "SAP Cloud ALM region",
+          "enum": [
+            "eu10",
+            "eu20"
+          ],
+          "default": "eu10"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/eventsData": {
+      "get": {
+        "tags": [
+          "Events Information"
+        ],
+        "summary": "Returns events available in Business Service Management for the given request parameters",
+        "description": "Get information about all events that are available in Business Service Management. The maximum range is the last year.\n\nThis interface supports a subset of the <a href=\"https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html\">OData v4</a> standard, which is compatible with SAP Cloud ALM.\n\nThe following control properties could be used to shape the content of the EventsData (see also *$filter* parameter).\n- **eventId**: String representation of the event UUID. \n- **eventName**: Name of the event. \n- **eventDescription**: Description of the event. \n- **eventType**: Type of event for which events need to be retrieved. Allowed event type values are `Maintenance`, `Degradation`, and `Disruption`. Currently, this API does not return any communication events. Example: If you want to retrieve all events of type Degradation, simply pass the event type as **Degradation**. \n- **eventSource**: Source of the event. It can be `SAP` or `Customer`. \n- **eventStartTime**: Time stamp with format `YYYY-MM-DDTHH:MM:SSZ` in the UTC time zone. \n- **eventEndTime**: Time stamp with format `YYYY-MM-DDTHH:MM:SSZ` in UTC time zone. \n- **eventStatus**: Status of the event. Allowed values are `Open`, `In Process` ,`Closed` , and `Scheduled`.\n- **serviceName**: Name of the business service, cloud service, or technical system for which events need to be retrieved.\n- **serviceDescription**: Description of the business service, cloud service, or technical system for which events need to be retrieved.\n- **serviceId**: String representation of the business service, cloud service, or technical system UUID. \n- **serviceType**: Name or label or service type, for example, `IRPA` \n- **type**: Type of service for which events need to be retrieved. Allowed service type values are `BusinessService`, `CloudService`, and `TechnicalSystem`. Example: If you want to retrieve all events for any business service, simply pass the service type as **BusinessService**. \n\n Examples:\n- /eventsData \n- /eventsData?$filter=eventName eq 'EV4977232' \n- /eventsData?$filter=eventName eq 'EV4977232' and eventId eq 'dd580228-1605-45db-9ee8-4b8faf1e66c6' and eventDescription eq '' and eventType eq 'Maintenance' and eventSource eq 'SAP' and eventStartTime eq '2021-09-11T22:00:00Z' and eventEndTime eq '2021-09-12T02:00:00Z' and eventStatus eq 'closed' and serviceName eq 'gruppotim' and serviceDescription eq 'gruppotim (0M31J6B)' and serviceId eq '3b6394c5-c74d-4e74-abd7-f15d7cf94d54' and type eq 'CloudService'  \n- /eventsData?$filter=eventName in ('EV4977232',  'EV6163841') \n- /eventsData?$orderby=eventName&$skip=1000 \n- /eventsData?$filter=eventStartTime gt '2022-03-18T19:00:00Z' and eventStartTime lt '2022-03-20T19:00:00Z' \n- /eventsData?$filter=serviceType eq 'IRPA'",
+        "externalDocs": {
+          "description": "API Guide for SAP Cloud ALM: Business Service Management API",
+          "url": ""
+        },
+        "operationId": "getEventsData",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "$filter",
+            "description": "Filters results (rows). Allows clients to filter a collection of resources that are addressed by a request URL. See also <a href=\"http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect\">OData v4</a>. \n\n The filter cannot be applied on eventDuration, systemNumber"
+            
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "$select",
+            "description": "Filters properties (columns). Allows the clients to request a limited set of properties for each entity. See also <a href=\"http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionselect\">OData v4</a>."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "$skip",
+            "description": "Requests the number of items in the queried collection that are to be skipped and not included in the result. $skip parameter is used to implement paging with $top parameter. See also <a href=\"http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptionskip\">OData v4</a>."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "$top",
+            "description": "Sets the page size of results. Requests the number of items in the queried collection to be included in the result. Default size is 1000. See also <a href=\"http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptiontop\">OData v4</a>."
+          },
+          
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "$orderby",
+            "description": "Allows clients to sort result data. See also <a href=\"http://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part1-protocol.html#sec_SystemQueryOptioncount\">OData v4</a>. \n\n orderby cannot be applied on eventDuration, systemType, and systemNumber."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventsData"
+                  }
+                },
+                "examples": {
+                  "Event Exists": {
+                    "description": "Get events that occurred in the last year",
+                    "value": [
+                      {
+                        "eventId": "4138dbf9-2fd0-4158-9219-4cbdea610ad4",
+                        "eventName": "EV11631020",
+                        "eventDescription": "You will not be able to access the system(s) until resolution",
+                        "eventType": "Disruption",
+                        "eventSource": "SAP",
+                        "eventStartTime": "2022-05-05T13:48:00Z",
+                        "eventEndTime": "2022-05-05T13:52:00Z",
+                        "eventDuration": 4,
+                        "eventStatus": "In Process",
+                        "serviceName": "50648e73-1319-4abf-bb59-2c3611f78263",
+                        "serviceDescription": "50648e73-1319-4abf-bb59-2c3611f78263(0M3NAJC)",
+                        "serviceId": "a2820533-3bbc-4cf1-8ad6-07815971f489",
+                        "systemNumber": "742107756",
+                        "serviceType": "SAP Intelligent Robotic Process Automation",
+                        "type": "CloudService"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No events found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": [
+          "Events Information"
+        ],
+        "summary": "Returns events available in Business Service Management for the given request parameters",
+        "description": "Get information about all events that are available in Business Service Management.\n\n You can pass the below request parameters to get the events as needed.\n- **type**: Type of the service for which events need to be retrieved. Allowed service type values are `BusinessService`, `CloudService`, and `TechnicalSystem`. Example: If you need all events of any business service, simply pass the service type as **BusinessService**. \n- **serviceName**: Name of the business service, cloud service, or technical system for which events need to be retrieved.\n- **eventType**: Type of the event for which events need to be retrieved. Allowed service type values are `Maintenance`, `Degradation`, and `Disruption`. Currently, this API does not return any communication events. Example: If you need all events of type Degradation, simply pass the service type as **Degradation**.\n- **serviceType**: Service type or service type label of the event for which events need to be retrieved, for example, **IRPA**.\n- **period**:  Indicates the time period. Format is: `<L|C><Number><H|D|W|M|Y>`. L stands for Last (doesn't include the current period), C stands for Current (includes the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month, and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday). The time period is measured from “endTime”. If endTime is not given, it's measured with currentTimestamp (no need to pass). \n- **startTime**: Time stamp with format `YYYY-MM-DDTHH:MM:SSZ` in UTC time zone, indicating the starting reference for the eventStartTime period. Pass startTime only if you are passing endTime in the query parameter. \n- **endTime**: Time stamp with format `YYYY-MM-DDTHH:MM:SSZ` in UTC time zone, indicating the ending reference for the eventStartTime period. You can pass endTime with either startTime or Period. \n- **limit**: Paging parameter - the maximum number of items to be returned. \n- **offset**: Paging parameter - the number of items to skip before starting to collect the result set. \n\n Time period calculations: \n- **If period, startTime and endTime all are provided in query param**: events having eventStartTime in given startTime and endTime range will be returned, period will be ignored. If you pass startTime and endTime, the period value is not needed. \n- **If period and startTime is provided in query**: If period and startTime are provided without endTime, the events having eventStartTime in time period from currentTimestamp will be returned, and startTime will be ignored. The time period is calculated from endTime or currentTimestamp. Pass startTime only if you are passing endTime in the query param. \n- **If Period and endTime is provided in query**: If Period and endTime is provided in query without startTime then all the events having eventStartTime in time period from endTime are returned. \n- **If startTime and endTime is provided in query**: If startTime and endTime are provided in the query without period, the events with eventStartTime in given startTime and endTime range will be returned. \n- **If Period, startTime and endTime are not in query**: events with eventStartTime in the last 24 hours will be returned. \n- **If no query parameters are passed**: events with eventStartTime in the last 24 hours will be returned. \n\n Examples:\n- /events \n- /events?type=BusinessService&serviceName=SAP IT (Production)&period=L10H&eventType=Maintenance&startTime=2022-04-16T15:00:00Z&endTime=2022-04-20T15:00:00Z \n- /events?type=CloudService \n- /events?type=CloudService,BusinessService \n- events?type=BusinessService&serviceName=SAP IT (Production)&period=L10H  \n- /events?serviceType=IRPA \n- events?eventType=Maintenance \n- /events?serviceName=SAP IT (Production)",
+        
+        "operationId": "getEvents",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Type for which the client needs to get events",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BusinessService",
+                "CloudService",
+                "TechnicalSystem"
+              ]
+            },
+            "example": "BusinessService"
+          },
+          {
+            "name": "serviceName",
+            "in": "query",
+            "description": "Service name for which the client needs to get events",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          
+          {
+            "name": "eventType",
+            "in": "query",
+            "description": "Event type for which the client needs to get events. Currently, communication events are not returned from this API. ",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Maintenance",
+                "Degradation",
+                "Disruption"
+              ]
+            },
+            "example": "Maintenance"
+          },
+          {
+            "name": "serviceType",
+            "in": "query",
+            "description": "Service type or service type label for which events need to be retrieved",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Indicates the time period. The format is: <L|C><Number><H|D|W|M|Y>. L stands for Last (doesn't include the current period), C stands for Current (include the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month, and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday). The time period is measured from \"endTime\" or \"current timestamp\". \n\n For more information on period, startTime, and endTime calculations, refer to the description section headed **Time period calculations** of the API.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "Start time with format `YYYY-MM-DDTHH:MM:SSZ` in UTC time zone, indicating the starting reference for the eventStartTime period.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "End time with format `YYYY-MM-DDTHH:MM:SSZ` in UTC time zone, indicating the ending reference for the eventStartTime period.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Paging parameter - the maximum number of items to be returned. Default value is 1000.",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Paging parameter - the number of items to skip before starting to collect the result set. Default value is 0",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+          
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventsData"
+                  }
+                },
+                "examples": {
+                  "Event Exists": {
+                    "description": "Get events that occurred in the last year",
+                    "value": [
+                      {
+                        "eventId": "4138dbf9-2fd0-4158-9219-4cbdea610ad4",
+                        "eventName": "EV11631020",
+                        "eventDescription": "Youwillnotbeabletoaccessthesystem(s)untilresolution",
+                        "eventType": "Disruption",
+                        "eventSource": "SAP",
+                        "eventStartTime": "2022-05-05T13:48:00Z",
+                        "eventEndTime": "2022-05-05T13:52:00Z",
+                        "eventDuration": 4,
+                        "eventStatus": "InProcess",
+                        "serviceName": "50648e73-1319-4abf-bb59-2c3611f78263",
+                        "serviceDescription": "50648e73-1319-4abf-bb59-2c3611f78263(0M3NAJC)",
+                        "serviceId": "a2820533-3bbc-4cf1-8ad6-07815971f489",
+                        "systemNumber": "742107756",
+                        "serviceType": "SAPIntelligentRoboticProcessAutomation",
+                        "type": "CloudService"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No events found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "In case the input is semantically incorrect",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ErrorResponse"
+                  }
+                },
+                "examples": {
+                  "Invalid Input parameter": {
+                    "description": "The passed request parameter is not valid.",
+                    "value": "[ { \"error\": \"Input validation error\", \"details\": \"Valid format is: <L|C><Number><H|D|W|M|Y>. Where L stands for Last (doesn't include the current period), C stands for Current (include the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday).\", \"message\": \"Invalid request Parameter value: L900z for period\", \"attribute\": \"period\" } ]"
+                  },
+                  "Invalid Input parameters": {
+                    "description": "The passed request parameters are not valid.",
+                    "value": "[ { \"error\": \"Input validation error\", \"details\": \"Valid values are \\\"Maintenance\\\", \\\"Degradation\\\", \\\"Disruption\\\"\", \"message\": \"Invalid request Parameter value: disruption1 for eventType\", \"attribute\": \"eventType\" }, { \"error\": \"Input validation error\", \"details\": \"Valid format is: <L|C><Number><H|D|W|M|Y>. Where L stands for Last (doesn't include the current period), C stands for Current (include the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday).\", \"message\": \"Invalid request Parameter value: L900z for period\", \"attribute\": \"period\" } ]"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oAuth2": {
+        "type": "oauth2",
+        "description": "To use this API, you need to obtain the OAuth client credentials (client ID and secret) using the SAP S/4HANA Cloud Platform cockpit.<br>After that, pass these client credentials to the SAP S/4HANA Cloud Platform token endpoint to obtain an access token.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://{identityzone}.authentication.{region}.hana.ondemand.com/oauth/token",
+            "scopes": {}
+          }
+        }
+      }
+    },
+    "schemas": {
+      "EventsData": {
+        "required": [
+          "eventId",
+          "eventName",
+          "eventSource",
+          "eventType",
+          "serviceDescription",
+          "serviceName"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "title": "Event ID",
+            "maxLength": 36,
+            "type": "string",
+            "description": "String representation of the event UUID.",
+            "example": "dfb791bf-7440-497b-9878-32590270a643"
+          },
+          "eventName": {
+            "title": "Event Name",
+            "maxLength": 128,
+            "type": "string",
+            "description": "Name of the event",
+            "example": "EV4681739"
+          },
+          "eventDescription": {
+            "title": "Event Description",
+            "maxLength": 5000,
+            "type": "string",
+            "description": "Description of the event",
+            "example": "Event Mesh functionality and lifecycle operations may be unavailable, It may contain newline character or html text"
+          },
+          "eventType": {
+            "title": "Event Type",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Type of the event",
+            "example": "Disruption",
+            "enum": [
+              "Degradation",
+              "Disruption",
+              "Maintenance"
+            ]
+          },
+          "eventSource": {
+            "title": "Event Source",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Represents if the event is created by the customer or reported by SAP.",
+            "example": "SAP",
+            "enum": [
+              "SAP",
+              "Customer"
+            ]
+          },
+          "eventStartTime": {
+            "title": "Event Start time",
+            "type": "string",
+            "description": "String representation of the time stamp, which denotes the start time of the event in UTC with format YYYY-MM-DDTHH:MM:SSZ",
+            "example": "2022-04-16T15:00:00Z"
+          },
+          "eventEndTime": {
+            "title": "Event End time",
+            "type": "string",
+            "description": "String representation of the time stamp, which denotes the end time of the event in UTC with format YYYY-MM-DDTHH:MM:SSZ",
+            "example": "2022-04-16T15:10:00Z"
+          },
+          "eventDuration": {
+            "title": "Event Duration",
+            "type": "integer",
+            "description": "Represents the duration for which the event is active, in minutes",
+            "format": "int64",
+            "example": 5
+          },
+          "eventStatus": {
+            "title": "Event Status",
+            "maxLength": 256,
+            "type": "string",
+            "description": "Current status of the event",
+            "example": "closed",
+            "enum": [
+              "Open",
+              "In Process",
+              "Closed",
+              "Scheduled"
+            ]
+          },
+          "serviceName": {
+            "title": "Service Name",
+            "maxLength": 256,
+            "type": "string",
+            "description": "Name of the cloud service, technical system, or business service",
+            "example": "MyEventMesh_01"
+          },
+          "serviceDescription": {
+            "title": "Service Description",
+            "maxLength": 256,
+            "type": "string",
+            "description": "Description of the cloud service, technical system, or business service",
+            "example": "MyEventMesh_01"
+          },
+          "serviceId": {
+            "title": "Service Id",
+            "maxLength": 36,
+            "type": "string",
+            "description": "String representation of cloud service, technical system, or business service UUID.",
+            "example": "8976345-34344534-3434-345345"
+          },
+          "systemNumber": {
+            "title": "Service Number",
+            "maxLength": 36,
+            "type": "string",
+            "description": "System number if the event is on technical system or tenant ID, if the event is on technical system, blank if event is on business service",
+            "example": "8976345"
+          },
+          "serviceType": {
+            "title": "Service Type",
+            "maxLength": 256,
+            "type": "string",
+            "description": "Service type for the given service, blank if event ID on business service",
+            "example": "SAP Event Mesh"
+          },
+          "type": {
+            "title": "Type",
+            "maxLength": 64,
+            "type": "string",
+            "description": "Type of the service, such as CloudService/BusinessService/TechnicalSystem",
+            "example": "CloudService",
+            "enum": [
+              "CloudService",
+              "BusinessService",
+              "TechnicalSystem"
+            ]
+          }
+        },
+        "description": "This model describes the response payload from GET Events API"
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "This model describes the response payload if an error occurs from GET Events API",
+        "properties": {
+          "error": {
+            "title": "Error",
+            "type": "string",
+            "description": "Error description",
+            "example": "Input validation error"
+          },
+          "details": {
+            "title": "Error Details",
+            "type": "string",
+            "description": "Detailed description of the error, with steps to resolve the error",
+            "example": "Valid format is: <L|C><Number><H|D|W|M|Y>. Where L stands for Last (doesn't include the current period), C stands for Current (include the current period), H stands for Hour, D stands for Day, W stands for Week, M stands for Month and Y stands for Year. For example, L1D means Last 1 Day (i.e. Yesterday)."
+          },
+          "message": {
+            "title": "Error Message",
+            "type": "string",
+            "description": "Root cause for the error",
+            "example": "Invalid request Parameter value: L900z for period"
+          },
+          "attribute": {
+            "title": "Error Attribute",
+            "type": "string",
+            "description": "Represents the exact attribute causing the error",
+            "example": "period"
+          }
+        }
+        
+      },
+      
+      "Error": {
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": [
+              "code",
+              "message"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
